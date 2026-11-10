@@ -1,0 +1,19 @@
+.blueprint-trace {
+  display: inline-block;
+  position: relative;
+  line-height: 0;
+  cursor: pointer;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.blueprint-trace:hover {
+  transform: scale(1.03);
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.08));
+}
+
+.blueprint-trace__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
