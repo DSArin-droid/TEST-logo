@@ -1,0 +1,108 @@
+.orbit-moving-lines {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  isolation: isolate;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.orbit-moving-lines:hover {
+  transform: scale(1.03);
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.08));
+}
+
+.orbit-moving-lines__scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.orbit-moving-lines img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.orbit-moving-lines__orbits {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.orbit-moving-lines__piece {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  will-change: transform, opacity;
+}
+
+.orbit-moving-lines__piece img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.orbit-moving-lines__piece--one {
+  clip-path: inset(15% 39% 47% 39%);
+}
+
+.orbit-moving-lines__piece--two {
+  clip-path: inset(48% 39% 14% 39%);
+}
+
+.orbit-moving-lines__piece--three {
+  clip-path: inset(18% 48% 48% 10%);
+}
+
+.orbit-moving-lines__piece--four {
+  clip-path: inset(48% 10% 16% 48%);
+}
+
+.orbit-moving-lines__final {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.orbit-moving-lines__replay {
+  position: absolute;
+  z-index: 8;
+  right: 12px;
+  bottom: 12px;
+  border: 1px solid #777;
+  background: rgba(0, 0, 0, 0.82);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-moving-lines__orbits,
+  .orbit-moving-lines__piece,
+  .orbit-moving-lines__final {
+    animation: none !important;
+    transition: none !important;
+  }
+  .orbit-moving-lines__piece {
+    display: none;
+  }
+  .orbit-moving-lines__final {
+    opacity: 1 !important;
+  }
+}

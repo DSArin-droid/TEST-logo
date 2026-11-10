@@ -1,0 +1,78 @@
+import React, { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import "./KineticSnap.css";
+
+// Exact path data from the supplied SVG. The original paths are not redrawn.
+const LOGO_PARTS = [
+  { d: 'M313.518 174.652C313.518 162.97 304.048 153.5 292.366 153.5C280.684 153.5 271.214 162.97 271.214 174.652V342.36C271.214 354.042 280.684 363.512 292.366 363.512C304.048 363.512 313.518 354.042 313.518 342.36V174.652Z', fill: 'black' },
+  { d: 'M387.549 174.652C387.549 162.97 378.079 153.5 366.397 153.5C354.716 153.5 345.246 162.97 345.246 174.652V289.857C345.246 301.539 354.716 311.009 366.397 311.009C378.079 311.009 387.549 301.539 387.549 289.857V174.652Z', fill: 'black' },
+  { d: 'M229.131 187.55C237.391 179.349 237.391 166.051 229.131 157.85C220.871 149.649 207.478 149.649 199.218 157.85L116.957 239.525C108.696 247.727 108.696 261.024 116.957 269.225C125.217 277.427 138.61 277.427 146.87 269.225L229.131 187.55Z', fill: 'black' },
+  { d: 'M229.131 271.555C237.391 263.353 237.391 250.056 229.131 241.855C220.871 233.653 207.478 233.653 199.218 241.855L116.957 323.53C108.696 331.731 108.696 345.028 116.957 353.23C125.217 361.431 138.61 361.431 146.87 353.23L229.131 271.555Z', fill: 'black' }
+];
+
+const START = [
+  { x: 0, y: -185, sx: 0.72, sy: 1.22 },
+  { x: 0, y: 185, sx: 0.72, sy: 1.22 },
+  { x: -180, y: -70, sx: 1.28, sy: 0.72 },
+  { x: -180, y: 70, sx: 1.28, sy: 0.72 },
+];
+
+const DELAYS = [0, 0.10, 0.20, 0.30];
+
+export default function KineticSnap({
+  size = 220,
+  duration = 4.6,
+  loop = true,
+  className = "",
+  ariaLabel = "Kinetic snap logo animation",
+}) {
+  const reduceMotion = useReducedMotion();
+  const [run, setRun] = useState(0);
+
+  const restart = () => setRun((v) => v + 1);
+
+  return (
+    <div
+      className={`kinetic-snap ${className}`}
+      style={{ width: size }}
+      role="img"
+      aria-label={ariaLabel}
+      onMouseEnter={restart}
+      onClick={restart}
+    >
+      <svg key={run} viewBox="0 0 512 512" aria-hidden="true">
+        <path d="M0 256C0 397.385 114.615 512 256 512C397.385 512 512 397.385 512 256C512 114.615 397.385 0 256 0C114.615 0 0 114.615 0 256Z" fill="white" />
+        {LOGO_PARTS.map((part, i) => {
+          const s = START[i];
+          const delay = DELAYS[i];
+          if (reduceMotion) return <path key={i} d={part.d} fill={part.fill} />;
+          return (
+            <motion.g
+              key={i}
+              initial={{ x: s.x, y: s.y, opacity: 0, scaleX: s.sx, scaleY: s.sy }}
+              animate={{
+                x: [s.x, 0, 0, s.x],
+                y: [s.y, 0, 0, s.y],
+                opacity: [0, 1, 1, 0],
+                scaleX: [s.sx, 1.08, 1, s.sx],
+                scaleY: [s.sy, 0.94, 1, s.sy],
+              }}
+              transition={{
+                duration,
+                delay,
+                times: [0, 0.68, 0.84, 1],
+                ease: ["easeOut", [0.2, 0.8, 0.2, 1], "easeInOut"],
+                repeat: loop ? Infinity : 0,
+                repeatDelay: 0,
+              }}
+              style={{ transformOrigin: "256px 256px" }}
+            >
+              <path d={part.d} fill={part.fill} />
+            </motion.g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
